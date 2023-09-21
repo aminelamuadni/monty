@@ -25,13 +25,20 @@ void free_stack(stack_t *stack)
 void execute_line(char *line, stack_t **stack, unsigned int line_number)
 {
 	char *opcode = strtok(line, "\n\t\r ");
+	char *n_str;
 
 	if (opcode == NULL || opcode[0] == '#')
 		return;
 
 	if (strcmp(opcode, "push") == 0)
 	{
-		char *n_str = strtok(NULL, "\n\t\r ");
+		n_str = strtok(NULL, "\n\t\r ");
+
+		if (n_str == NULL || (atoi(n_str) == 0 && n_str[0] != '0'))
+		{
+			fprintf(stderr, "L%d: usage: push integer\n", line_number);
+			exit(EXIT_FAILURE);
+		}
 
 		push(stack, line_number, n_str);
 	}
