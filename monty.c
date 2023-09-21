@@ -17,6 +17,31 @@ void free_stack(stack_t *stack)
 }
 
 /**
+ * execute_line - Processes and executes a line.
+ * @line: The line to process.
+ * @stack: Head of the stack.
+ * @line_number: The current line number.
+ */
+void execute_line(char *line, stack_t **stack, unsigned int line_number)
+{
+	char *opcode = strtok(line, "\n\t\r ");
+
+	if (opcode == NULL || opcode[0] == '#')
+		return;
+
+	if (strcmp(opcode, "push") == 0)
+	{
+		char *n_str = strtok(NULL, "\n\t\r ");
+
+		push(stack, line_number, n_str);
+	}
+	else if (strcmp(opcode, "pall") == 0)
+	{
+		pall(stack, line_number);
+	}
+}
+
+/**
  * main - Entry point of Monty interpreter.
  * @argc: Number of arguments passed.
  * @argv: Array of arguments.
@@ -27,7 +52,6 @@ int main(int argc, char **argv)
 {
 	FILE *file;
 	char line[1024];
-	char *opcode = NULL;
 	unsigned int line_number = 0;
 	stack_t *stack = NULL;
 
@@ -47,20 +71,7 @@ int main(int argc, char **argv)
 	while (fgets(line, sizeof(line), file) != NULL)
 	{
 		line_number++;
-
-		opcode = strtok(line, "\n\t\r ");
-		if (opcode == NULL || opcode[0] == '#')
-			continue;
-
-		if (strcmp(opcode, "push") == 0)
-		{
-			char *n_str = strtok(NULL, "\n\t\r ");
-			push(&stack, line_number, n_str);
-		}
-		else if (strcmp(opcode, "pall") == 0)
-		{
-			pall(&stack, line_number);
-		}
+		execute_line(line, &stack, line_number);
 	}
 
 	free_stack(stack);
