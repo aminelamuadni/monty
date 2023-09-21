@@ -1,8 +1,34 @@
 #include "monty.h"
 
 /**
- * free_stack - Frees a doubly linked stack.
+ * is_digit - Check if a given string is a valid integer.
+ * @str: String to be checked.
+ *
+ * Return: 1 if string is a valid integer, otherwise 0.
+ */
+int is_digit(const char *str)
+{
+	if (!str)
+		return (0);
+
+	if (*str == '-' || *str == '+')
+		str++;
+
+	while (*str)
+	{
+		if (!isdigit(*str))
+			return (0);
+		str++;
+	}
+	return (1);
+}
+
+/**
+ * free_stack - Frees the memory used by a doubly linked stack.
  * @stack: Head of the stack.
+ *
+ * Description: Iterates through each element of the stack
+ * and frees the memory used by each node.
  */
 void free_stack(stack_t *stack)
 {
@@ -17,43 +43,42 @@ void free_stack(stack_t *stack)
 }
 
 /**
- * execute_line - Processes and executes a line.
- * @line: The line to process.
- * @stack: Head of the stack.
- * @line_number: The current line number.
+ * execute_line - Processes a line of Monty bytecode.
+ * @line: The line from the Monty bytecode file.
+ * @stack: Double pointer to the beginning of the stack.
+ * @line_number: The line number of the current instruction.
+ *
+ * Return: 0 if the line is processed without error, otherwise 1.
  */
-void execute_line(char *line, stack_t **stack, unsigned int line_number)
+int execute_line(char *line, stack_t **stack, unsigned int line_number)
 {
-	char *opcode = strtok(line, "\n\t\r ");
-	char *n_str;
+	char *opcode, *argument;
 
-	if (opcode == NULL || opcode[0] == '#')
-		return;
+	opcode = strtok(line, " \t\n");
+	if (!opcode || opcode[0] == '#')
+		return (0);
+
+	argument = strtok(NULL, " \t\n");
 
 	if (strcmp(opcode, "push") == 0)
 	{
-		n_str = strtok(NULL, "\n\t\r ");
-
-		if (n_str == NULL || (atoi(n_str) == 0 && n_str[0] != '0'))
-		{
-			fprintf(stderr, "L%d: usage: push integer\n", line_number);
-			exit(EXIT_FAILURE);
-		}
-
-		push(stack, line_number, n_str);
+		if (push(stack, line_number, argument) == 1)
+			return (1);
 	}
 	else if (strcmp(opcode, "pall") == 0)
 	{
 		pall(stack, line_number);
 	}
+
+	return (0);
 }
 
 /**
- * main - Entry point of Monty interpreter.
- * @argc: Number of arguments passed.
+ * main - The primary function for the Monty interpreter.
+ * @argc: Number of arguments passed to the program.
  * @argv: Array of arguments.
  *
- * Return: EXIT_SUCCESS on success or EXIT_FAILURE on failure.
+ * Return: EXIT_SUCCESS on successful interpretation, otherwise EXIT_FAILURE.
  */
 int main(int argc, char **argv)
 {
@@ -75,7 +100,7 @@ int main(int argc, char **argv)
 		exit(EXIT_FAILURE);
 	}
 
-	while (fgets(line, sizeof(line), file) != NULL)
+	while (fgets(line, sizeof(line), file))
 	{
 		line_number++;
 		execute_line(line, &stack, line_number);
