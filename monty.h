@@ -36,10 +36,10 @@ typedef struct instruction_s
 	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
-int push(stack_t **stack, unsigned int line_number, const char *n_str);
-void pall(stack_t **stack, unsigned int line_number);
-int is_digit(const char *str);
 void free_stack(stack_t *stack);
+int is_digit(const char *str);
 int execute_line(char *line, stack_t **stack, unsigned int line_number);
+void handle_push(stack_t **stack, unsigned int line_number, char *argument);
+void handle_pall(stack_t **stack, unsigned int line_number);
 
 #endif /* MONTY_H */
