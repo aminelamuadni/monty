@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
@@ -35,7 +36,10 @@ typedef struct instruction_s
 	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
-void push(stack_t **stack, unsigned int line_number, const char *n_str);
+int push(stack_t **stack, unsigned int line_number, const char *n_str);
 void pall(stack_t **stack, unsigned int line_number);
+int is_digit(const char *str);
+void free_stack(stack_t *stack);
+int execute_line(char *line, stack_t **stack, unsigned int line_number);
 
 #endif /* MONTY_H */
