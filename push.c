@@ -22,7 +22,8 @@ int push(stack_t **stack, unsigned int line_number, const char *n_str)
 	if (!new_node)
 	{
 		fprintf(stderr, "Error: malloc failed\n");
-		return (1);
+		free_stack(*stack);
+		exit(EXIT_FAILURE);
 	}
 
 	new_node->n = atoi(n_str);
