@@ -13,7 +13,7 @@ void handle_push(stack_t **stack, unsigned int line_number, char *argument)
 	if (!argument || !is_digit(argument))
 	{
 		fprintf(stderr, "L%d: usage: push integer\n", line_number);
-		exit(EXIT_FAILURE); 
+		exit(EXIT_FAILURE);
 	}
 
 	new_node = malloc(sizeof(stack_t));
