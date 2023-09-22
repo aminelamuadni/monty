@@ -11,23 +11,11 @@
 int execute_line(char *line, stack_t **stack, unsigned int line_number)
 {
 	char *opcode, *argument;
-	int i;
-
-	instruction_t functions[] = {
-		{"pall", handle_pall},
-		{"pint", handle_pint},
-		{"pop", handle_pop},
-		{"swap", handle_swap},
-		{"add", handle_add},
-		{"nop", handle_nop},
-		{NULL, NULL}
-	};
+	void (*function)(stack_t **, unsigned int);
 
 	opcode = strtok(line, " \t\n");
 	if (!opcode || opcode[0] == '#')
-	{
 		return (0);
-	}
 
 	argument = strtok(NULL, " \t\n");
 
@@ -37,17 +25,13 @@ int execute_line(char *line, stack_t **stack, unsigned int line_number)
 		return (0);
 	}
 
-	for (i = 0; functions[i].opcode; i++)
+	function = get_instruction_function(opcode);
+	if (function)
 	{
-		if (strcmp(opcode, functions[i].opcode) == 0)
-		{
-			functions[i].f(stack, line_number);
-			return (0);
-		}
+		function(stack, line_number);
+		return (0);
 	}
 
 	fprintf(stderr, "L%d: unknown instruction %s\n", line_number, opcode);
 	exit(EXIT_FAILURE);
-
-	return (0);
 }
