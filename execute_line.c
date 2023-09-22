@@ -26,6 +26,10 @@ int execute_line(char *line, stack_t **stack, unsigned int line_number)
 	{
 		handle_pall(stack, line_number);
 	}
+	else if (strcmp(opcode, "pint") == 0)
+	{
+		handle_pint(stack, line_number);
+	}
 	else
 	{
 		fprintf(stderr, "L%d: unknown instruction %s\n", line_number, opcode);
