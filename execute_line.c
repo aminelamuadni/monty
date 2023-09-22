@@ -11,38 +11,42 @@
 int execute_line(char *line, stack_t **stack, unsigned int line_number)
 {
 	char *opcode, *argument;
+	int i;
+
+	instruction_t functions[] = {
+		{"pall", handle_pall},
+		{"pint", handle_pint},
+		{"pop", handle_pop},
+		{"swap", handle_swap},
+		{"add", handle_add},
+		{NULL, NULL}
+	};
 
 	opcode = strtok(line, " \t\n");
 	if (!opcode || opcode[0] == '#')
+	{
 		return (0);
+	}
 
 	argument = strtok(NULL, " \t\n");
 
 	if (strcmp(opcode, "push") == 0)
 	{
 		handle_push(stack, line_number, argument);
+		return (0);
 	}
-	else if (strcmp(opcode, "pall") == 0)
+
+	for (i = 0; functions[i].opcode; i++)
 	{
-		handle_pall(stack, line_number);
+		if (strcmp(opcode, functions[i].opcode) == 0)
+		{
+			functions[i].f(stack, line_number);
+			return (0);
+		}
 	}
-	else if (strcmp(opcode, "pint") == 0)
-	{
-		handle_pint(stack, line_number);
-	}
-	else if (strcmp(opcode, "pop") == 0)
-	{
-		handle_pop(stack, line_number);
-	}
-	else if (strcmp(opcode, "swap") == 0)
-	{
-		handle_swap(stack, line_number);
-	}
-	else
-	{
-		fprintf(stderr, "L%d: unknown instruction %s\n", line_number, opcode);
-		exit(EXIT_FAILURE);
-	}
+
+	fprintf(stderr, "L%d: unknown instruction %s\n", line_number, opcode);
+	exit(EXIT_FAILURE);
 
 	return (0);
 }
