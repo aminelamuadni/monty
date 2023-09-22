@@ -19,7 +19,7 @@ int execute_line(char *line, stack_t **stack, unsigned int line_number)
 		{"pop", handle_pop},
 		{"swap", handle_swap},
 		{"add", handle_add},
-		{"add", handle_nop},
+		{"nop", handle_nop},
 		{NULL, NULL}
 	};
 
