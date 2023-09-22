@@ -36,10 +36,14 @@ typedef struct instruction_s
 	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
+extern int mode;
+
 void free_stack(stack_t *stack);
 int is_digit(const char *str);
 void (*get_instruction_function(char *opcode))(stack_t **, unsigned int);
 int execute_line(char *line, stack_t **stack, unsigned int line_number);
+void push_stack_mode(stack_t **stack, stack_t *new_node);
+void push_queue_mode(stack_t **stack, stack_t *new_node);
 void handle_push(stack_t **stack, unsigned int line_number, char *argument);
 void handle_pall(stack_t **stack, unsigned int line_number);
 void handle_pint(stack_t **stack, unsigned int line_number);
@@ -55,5 +59,7 @@ void handle_pchar(stack_t **stack, unsigned int line_number);
 void handle_pstr(stack_t **stack, unsigned int line_number);
 void handle_rotl(stack_t **stack, unsigned int line_number);
 void handle_rotr(stack_t **stack, unsigned int line_number);
+void handle_stack(stack_t **stack, unsigned int line_number);
+void handle_queue(stack_t **stack, unsigned int line_number);
 
 #endif /* MONTY_H */
