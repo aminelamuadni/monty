@@ -25,6 +25,8 @@ void (*get_instruction_function(char *opcode))(stack_t **, unsigned int)
 		{"pstr", handle_pstr},
 		{"rotl", handle_rotl},
 		{"rotr", handle_rotr},
+		{"stack", handle_stack},
+		{"queue", handle_queue},
 		{NULL, NULL}
 	};
 
