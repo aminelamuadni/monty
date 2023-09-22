@@ -34,6 +34,10 @@ int execute_line(char *line, stack_t **stack, unsigned int line_number)
 	{
 		handle_pop(stack, line_number);
 	}
+	else if (strcmp(opcode, "swap") == 0)
+	{
+		handle_swap(stack, line_number);
+	}
 	else
 	{
 		fprintf(stderr, "L%d: unknown instruction %s\n", line_number, opcode);
