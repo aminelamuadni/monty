@@ -19,6 +19,7 @@ void (*get_instruction_function(char *opcode))(stack_t **, unsigned int)
 		{"nop", handle_nop},
 		{"sub", handle_sub},
 		{"div", handle_div},
+		{"mul", handle_mul},
 		{NULL, NULL}
 	};
 
