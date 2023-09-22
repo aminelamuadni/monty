@@ -23,6 +23,7 @@ void (*get_instruction_function(char *opcode))(stack_t **, unsigned int)
 		{"mod", handle_mod},
 		{"pchar", handle_pchar},
 		{"pstr", handle_pstr},
+		{"rotl", handle_rotl},
 		{NULL, NULL}
 	};
 
